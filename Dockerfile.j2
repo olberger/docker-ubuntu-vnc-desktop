@@ -30,6 +30,7 @@ RUN apt update \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 # install debs error if combine together
+{%if image == "ubuntu:18.04" %}
 RUN add-apt-repository -y ppa:fcwu-tw/apps \
     && apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
@@ -39,6 +40,15 @@ RUN add-apt-repository -y ppa:fcwu-tw/apps \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+{% else %}
+RUN apt update \
+    && apt install -y --no-install-recommends \
+        xvfb x11vnc \
+        {%for package in addon_packages%}{{package}} {%endfor%} \
+    && apt autoclean -y \
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+{% endif %}
 {%if desktop == "lxde" %}
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
@@ -58,10 +68,20 @@ RUN apt update \
 # Additional packages require ~600MB
 # libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
 
+{%if image == "ubuntu:18.04" %}
+
 # tini for subreap
 ARG TINI_VERSION=v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-{{arch}} /bin/tini
 RUN chmod +x /bin/tini
+{% else %}
+RUN apt update \
+    && apt install -y --no-install-recommends \
+        tini \
+    && apt autoclean -y \
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+{%endif%} 
 
 # ffmpeg
 RUN mkdir -p /usr/local/ffmpeg \
@@ -80,6 +100,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/* /tmp/a.txt /tmp/b.txt
 
+RUN apt update \
+    && apt install -y --no-install-recommends \
+        novnc websockify procps \
+    && apt autoclean -y \
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
 ################################################################################
 # builder
@@ -95,7 +121,7 @@ RUN apt-get update \
 
 # nodejs
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    && apt-get install -y nodejs
+  && apt install -y nodejs=8.15.1-1nodesource1
 
 # yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
@@ -121,6 +147,8 @@ LABEL maintainer="fcwu.tw@gmail.com"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
+
+RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
 
 EXPOSE 80
 WORKDIR /root

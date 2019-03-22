@@ -69,6 +69,6 @@ command=x11vnc -display :1 -xkb -forever -shared -repeat
 
 [program:novnc]
 priority=25
-directory=/usr/local/lib/web/frontend/static/novnc
-command=bash /usr/local/lib/web/frontend/static/novnc/utils/launch.sh --listen 6081
+directory=/usr/share/novnc
+command=bash /usr/share/novnc/utils/launch.sh --listen 6081
 stopasgroup=true

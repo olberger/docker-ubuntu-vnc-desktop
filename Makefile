@@ -2,8 +2,9 @@
 
 REPO  ?= dorowu/ubuntu-desktop-lxde-vnc
 TAG   ?= latest
-IMAGE ?= ubuntu:18.04
-LOCALBUILD ?= 1
+IMAGE ?= debian:buster
+# LOCALBUILD ?= 1
+LOCALBUILD ?=
 FLAVOR ?= lxde
 ARCH ?= amd64
 
