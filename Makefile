@@ -1,6 +1,6 @@
 .PHONY: build run
 
-REPO  ?= dorowu/ubuntu-desktop-lxde-vnc
+REPO  ?= olberger/debian-desktop-lxde-vnc
 TAG   ?= latest
 IMAGE ?= debian:buster
 # LOCALBUILD ?= 1
