@@ -130,6 +130,9 @@ LABEL maintainer="fcwu.tw@gmail.com"
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
 
+# docker run ... --volumes-from <ME> -e DISPLAY=:1 ... firefox
+VOLUME /tmp/.X11-unix
+
 EXPOSE 80
 WORKDIR /root
 ENV HOME=/home/ubuntu \
