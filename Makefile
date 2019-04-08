@@ -1,5 +1,6 @@
 .PHONY: build run
 
+# Default values for variables
 REPO  ?= olberger/debian-desktop-lxde-vnc
 TAG   ?= latest
 IMAGE ?= debian:buster
@@ -7,6 +8,8 @@ IMAGE ?= debian:buster
 LOCALBUILD ?=
 FLAVOR ?= lxde
 ARCH ?= amd64
+THEUSER ?= labtainer
+THEPASSWORD ?= labtainer
 
 templates = Dockerfile image/etc/supervisor/conf.d/supervisord.conf
 
@@ -17,7 +20,7 @@ run:
 	docker run --rm \
 		-p 6080:80 -p 6081:443 \
 		-v ${PWD}:/src:ro \
-		-e USER=doro -e PASSWORD=mypassword \
+		-e USER=$(THEUSER) -e PASSWORD=$(THEPASSWORD) \
 		-e ALSADEV=hw:2,0 \
 		-e SSL_PORT=443 \
 		-v ${PWD}/ssl:/etc/nginx/ssl \
