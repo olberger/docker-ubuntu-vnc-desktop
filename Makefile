@@ -33,7 +33,7 @@ run:
 		-e SSL_PORT=443 \
 		-v ${PWD}/ssl:/etc/nginx/ssl \
 		--device /dev/snd \
-		--name ubuntu-desktop-lxde-test \
+		--name debian-x11-novnc-bridge-test \
 		$(REPO):$(TAG)
 
 # Connect inside the running container for debugging
