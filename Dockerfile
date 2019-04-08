@@ -1,4 +1,4 @@
-# Built with arch: amd64 flavor: lxde image: debian:buster localbuild: 0
+# Built with arch: amd64 flavor: x11 image: debian:buster localbuild: 0
 #
 ################################################################################
 # base system
@@ -26,20 +26,21 @@ RUN apt update \
 RUN apt update \
     && apt install -y --no-install-recommends \
         xvfb x11vnc \
-        vim-tiny ttf-wqy-zenhei  \
+        vim-tiny  \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
+ 
+ 
+ 
 
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
-        lxde gtk2-engines-murrine gnome-themes-standard gtk2-engines-pixbuf gtk2-engines-murrine arc-theme \
+        fvwm xterm \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
- 
- 
  
 # Additional packages require ~600MB
 # libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
@@ -109,7 +110,7 @@ RUN cd /src/web \
 # merge
 ################################################################################
 FROM system
-LABEL maintainer="fcwu.tw@gmail.com"
+LABEL maintainer="olivier.berger@telecom-sudparis.eu"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /

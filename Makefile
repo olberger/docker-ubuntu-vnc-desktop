@@ -1,14 +1,14 @@
 .PHONY: build run
 
 # Default values for variables
-REPO  ?= olberger/debian-desktop-lxde-vnc
+REPO  ?= olberger/debian-x11-novnc-bridge
 TAG   ?= latest
 # you can choose other base image versions
 IMAGE ?= debian:buster
 # use tw.archive.ubuntu.com instead of archive.ubuntu.com
 LOCALBUILD ?= 0
 # choose from supported flavors (see available ones in ./flavors/*.yml)
-FLAVOR ?= lxde
+FLAVOR ?= x11
 # armhf or amd64
 ARCH ?= amd64
 THEUSER ?= labtainer
@@ -26,6 +26,7 @@ build: $(templates)
 run:
 	docker run --rm \
 		-p 6080:80 -p 6081:443 \
+		-v /dev/shm:/dev/shm \
 		-v ${PWD}:/src:ro \
 		-e USER=$(THEUSER) -e PASSWORD=$(THEPASSWORD) \
 		-e ALSADEV=hw:2,0 \

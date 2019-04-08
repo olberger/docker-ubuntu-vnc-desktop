@@ -68,7 +68,15 @@ RUN apt update \
 {%if desktop == "xfce4" %}
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
-        xubuntu-desktop \
+        xfce4 \
+    && apt autoclean -y \
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+{%endif%} 
+{%if desktop == "fvwm" %}
+RUN apt update \
+    && apt install -y --no-install-recommends --allow-unauthenticated \
+        fvwm xterm \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -151,7 +159,7 @@ RUN cd /src/web/dist/static/novnc && patch -p0 < /src/web/novnc-armhf-1.patch
 # merge
 ################################################################################
 FROM system
-LABEL maintainer="fcwu.tw@gmail.com"
+LABEL maintainer="olivier.berger@telecom-sudparis.eu"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /

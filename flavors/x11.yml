@@ -1,0 +1,4 @@
+---
+addon_packages:
+  - vim-tiny
+desktop: fvwm
