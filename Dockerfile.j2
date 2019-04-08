@@ -166,6 +166,9 @@ COPY image /
 
 RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
 
+# docker run ... --volumes-from <ME> -e DISPLAY=:1 ... firefox
+VOLUME /tmp/.X11-unix
+
 EXPOSE 80
 WORKDIR /root
 ENV HOME=/home/ubuntu \
