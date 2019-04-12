@@ -8,7 +8,7 @@ IMAGE ?= debian:buster
 # use tw.archive.ubuntu.com instead of archive.ubuntu.com
 LOCALBUILD ?= 0
 # choose from supported flavors (see available ones in ./flavors/*.yml)
-FLAVOR ?= x11
+FLAVOR ?= null
 # armhf or amd64
 ARCH ?= amd64
 THEUSER ?= labtainer
@@ -35,6 +35,12 @@ run:
 		--device /dev/snd \
 		--name debian-x11-novnc-bridge-test \
 		$(REPO):$(TAG)
+
+tag:
+	docker tag $(REPO):latest $(REPO):$(TAG)
+
+push:
+	docker push $(REPO):$(TAG)
 
 # Connect inside the running container for debugging
 shell:

@@ -1,4 +1,4 @@
-# Built with arch: amd64 flavor: x11 image: debian:buster localbuild: 0
+# Built with arch: amd64 flavor: null image: debian:buster localbuild: 0
 #
 ################################################################################
 # base system
@@ -26,7 +26,7 @@ RUN apt update \
 RUN apt update \
     && apt install -y --no-install-recommends \
         xvfb x11vnc \
-        vim-tiny  \
+         \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -34,13 +34,6 @@ RUN apt update \
  
  
  
-
-RUN apt update \
-    && apt install -y --no-install-recommends --allow-unauthenticated \
-        fvwm xterm \
-    && apt autoclean -y \
-    && apt autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
  
 # Additional packages require ~600MB
 # libreoffice  pinta language-pack-zh-hant language-pack-gnome-zh-hant firefox-locale-zh-hant libreoffice-l10n-zh-tw
@@ -116,6 +109,9 @@ COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
 
 RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
+
+# docker run ... --volumes-from <ME> -e DISPLAY=:1 ... firefox
+VOLUME /tmp/.X11-unix
 
 EXPOSE 80
 WORKDIR /root
