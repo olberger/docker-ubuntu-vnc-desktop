@@ -1,3 +1,5 @@
+# Built with flavor: {{ flavor }}, desktop: {{ desktop }}
+
 [supervisord]
 redirect_stderr=true
 stopsignal=QUIT
@@ -80,6 +82,11 @@ directory=%HOME%
 command=/usr/bin/fvwm
 user=%USER%
 environment=DISPLAY=":1",HOME="%HOME%",USER="%USER%"
+{% endif %}
+
+{% if not desktop is defined %}
+[group:x]
+programs=xvfb,x11vnc,novnc
 {% endif %}
 
 [program:xvfb]
