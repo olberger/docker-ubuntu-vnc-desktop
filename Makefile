@@ -44,7 +44,7 @@ push:
 
 # Connect inside the running container for debugging
 shell:
-	docker exec -it ubuntu-desktop-lxde-test bash
+	docker exec -it debian-x11-novnc-bridge-test bash
 
 # Generate the SSL/TLS config for HTTPS
 gen-ssl:
