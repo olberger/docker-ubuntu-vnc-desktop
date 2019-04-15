@@ -64,12 +64,14 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/* /tmp/a.txt /tmp/b.txt
 
+
 RUN apt update \
     && apt install -y --no-install-recommends \
-        novnc websockify procps \
+        procps \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+
 
 ################################################################################
 # builder
@@ -107,8 +109,6 @@ LABEL maintainer="olivier.berger@telecom-sudparis.eu"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
-
-RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
 
 # docker run ... --volumes-from <ME> -e DISPLAY=:1 ... firefox
 VOLUME /tmp/.X11-unix
