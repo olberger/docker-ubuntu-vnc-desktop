@@ -123,7 +123,7 @@ RUN apt-get update \
 {%if image == "debian:buster" %}
 RUN apt update \
     && apt install -y --no-install-recommends \
-        novnc websockify procps \
+        wget procps \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -171,7 +171,16 @@ COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
 
 {%if image == "debian:buster" %}
-RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
+#RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
+RUN cd /usr/local/lib/web/frontend/static/ && \
+    wget -nv https://github.com/novnc/noVNC/archive/v1.1.0.tar.gz && \
+    tar zxf v1.1.0.tar.gz && \
+    ln -s /usr/local/lib/web/frontend/static/noVNC-1.1.0 /usr/local/lib/web/frontend/static/novnc && \
+    ln -s /usr/local/lib/web/frontend/static/noVNC-1.1.0 /usr/share/novnc
+RUN cd /usr/local/lib/web/frontend/static/novnc/utils && \
+    wget -nv https://github.com/novnc/websockify/archive/v0.8.0.tar.gz && \
+    tar zxf v0.8.0.tar.gz && \
+    ln -s websockify-0.8.0 websockify
 {%endif%}
 
 # docker run ... --volumes-from <ME> -e DISPLAY=:1 ... firefox

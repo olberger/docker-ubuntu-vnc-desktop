@@ -141,6 +141,9 @@
                     <input type="image" alt="Alt" src="novnc/app/images/alt.svg"
                         id="noVNC_toggle_alt_button" class="noVNC_button"
                         title="Toggle Alt"/>
+                    <input type="image" alt="Windows" src="novnc/app/images/windows.svg"
+                           id="noVNC_toggle_windows_button" class="noVNC_button"
+                           title="Toggle Windows"/>
                     <input type="image" alt="Tab" src="novnc/app/images/tab.svg"
                         id="noVNC_send_tab_button" class="noVNC_button"
                         title="Send Tab"/>
@@ -255,6 +258,10 @@
                                 <input id="noVNC_setting_reconnect_delay" type="number" />
                             </li>
                             <li><hr></li>
+                            <li>
+                                <label><input id="noVNC_setting_show_dot" type="checkbox" /> Show Dot when No Cursor</label>
+                            </li>
+                            <li><hr></li>
                             <!-- Logging selection dropdown -->
                             <li>
                                 <label>Logging:
@@ -340,7 +347,7 @@
         } else {
           UI.rfb.addEventListener('connect', function(event) {
             window.parent.postMessage(JSON.stringify({from: 'novnc', state: 'connectedd'}), '*');
-            UI.rfb._display.defaultCursor();
+            //UI.rfb._display.defaultCursor();
             // console.log(UI.connected)
             // console.log(event);
           });
