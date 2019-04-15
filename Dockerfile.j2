@@ -68,7 +68,11 @@ RUN apt update \
 {%if desktop == "xfce4" %}
 RUN apt update \
     && apt install -y --no-install-recommends --allow-unauthenticated \
-        xfce4 \
+{%if image == "ubuntu:18.04" %}
+        xubuntu-desktop \
+{% else %}
+       xfce4 \
+{% endif %}
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
@@ -116,12 +120,14 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/* /tmp/a.txt /tmp/b.txt
 
+{%if image == "debian:buster" %}
 RUN apt update \
     && apt install -y --no-install-recommends \
         novnc websockify procps \
     && apt autoclean -y \
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/*
+{%endif%}
 
 ################################################################################
 # builder
@@ -164,7 +170,9 @@ LABEL maintainer="olivier.berger@telecom-sudparis.eu"
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY image /
 
+{%if image == "debian:buster" %}
 RUN ln -s /usr/share/novnc /usr/local/lib/web/frontend/static/
+{%endif%}
 
 # docker run ... --volumes-from <ME> -e DISPLAY=:1 ... firefox
 VOLUME /tmp/.X11-unix
